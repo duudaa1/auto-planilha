@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dashboard</title>
+    <style>
+        /* Reset e estilos base */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+        }
+        
+        /* Container principal */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+        
+        /* Cabeçalho */
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        h2 {
+            color: #34495e;
+            margin-bottom: 15px;
+            font-size: 1.4rem;
+        }
+        
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        /* Listas */
+        ul {
+            list-style: none;
+        }
+        
+        li {
+            padding: 10px 15px;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.3s ease;
+        }
+        
+        li:hover {
+            background-color: #f8f9fa;
+        }
+        
+        li:last-child {
+            border-bottom: none;
+        }
+        
+        /* Botões */
+        .btn-container {
+            margin-top: 30px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn-success {
+            background-color: #27ae60;
+            color: white;
+        }
+        
+        .btn-primary {
+            background-color: #2980b9;
+            color: white;
+        }
+        
+        .btn-warning {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .btn-danger {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        /* Layout responsivo */
+        @media (min-width: 768px) {
+            .card-container {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 20px;
+            }
+            
+            .card {
+                margin-bottom: 0;
+            }
+        }
+        
+        /* Mensagens vazias */
+        .empty-message {
+            color: #7f8c8d;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Sistema de Vendas e Serviços</h1>
+        
+        <div class="card-container">
+            <!-- Clientes -->
+            <div class="card">
+                <h2>Clientes (Total: {{ clientes|length }})</h2>
+                {% if clientes|length > 0 %}
+                    <ul>
+                    {% for cliente in clientes %}
+                        <li>{{ cliente.nome }} ({{ cliente.id }}) - {{ cliente.telefone }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty-message">Nenhum cliente cadastrado</p>
+                {% endif %}
+            </div>
+            
+            <!-- Vendas -->
+            <div class="card">
+                <h2>Vendas (Total: {{ vendas|length }})</h2>
+                {% if vendas|length > 0 %}
+                    <ul>
+                    {% for venda in vendas %}
+                        <li>{{ venda.produto }} - R$ {{ "%.2f"|format(venda.valor) }}</li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty-message">Nenhuma venda registrada</p>
+                {% endif %}
+            </div>
+            
+            <!-- Ordens de Serviço -->
+            <div class="card">
+                <h2>Ordens de Serviço (Total: {{ ordens|length }})</h2>
+                {% if ordens|length > 0 %}
+                    <ul>
+                    {% for ordem in ordens %}
+                        <li>{{ ordem.servico }} - <strong>{{ ordem.status }}</strong></li>
+                    {% endfor %}
+                    </ul>
+                {% else %}
+                    <p class="empty-message">Nenhuma ordem de serviço</p>
+                {% endif %}
+            </div>
+        </div>
+        
+        <div class="btn-container">
+            <a href="/cliente/novo" class="btn btn-success">Novo Cliente</a>
+            <a href="/venda/nova" class="btn btn-primary">Nova Venda</a>
+            <a href="/ordem/nova/1" class="btn btn-danger">Nova Ordem de Serviço</a>
+            <a href="/relatorios" class="btn btn-warning">Relatórios</a>
+        </div>
+    </div>
+</body>
+</html>
